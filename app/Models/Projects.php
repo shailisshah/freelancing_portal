@@ -11,6 +11,9 @@ class Projects extends Model {
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 0;
     const STATUS_DELETED = 2;
+    const SUBMITTED = 3;
+    const SEND_BACK_TO_CLIENT = 4;
+    public static $ProjectSubmissionStatus = [3 => 'Project Mark As Complete', 4 => 'Project Send Back For Changes'];
 
     /**
      * The attributes that are mass assignable.

@@ -28,11 +28,15 @@ Route::namespace('Admin')->group(function () {
     Route::any('admin/forgot-password', 'PasswordController@sendPasswordResetToken')->name('admin.password.request');
     Route::any('admin/reset-password/{token}', 'PasswordController@resetPassword')->name('admin.password.reset');
 
-
+    // Dashboard Routes...
     Route::get('/admin/dashboard', 'DashboardController@index')->name('admin.dashboard');
 
+    // Post Projects Routes For Client...
     Route::resource('/admin/post-projects', 'PostProjectsController', array("as" => "admin"));
     Route::get('/admin/post-projects/{id}/delete', ['as' => 'admin.post-projects.delete', 'uses' => 'PostProjectsController@destroy']);
+
+    // Projects Routes For Designer...
+    Route::resource('/admin/projects', 'ProjectsController', array("as" => "admin"));
 });
 
 

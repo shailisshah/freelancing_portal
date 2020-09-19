@@ -74,6 +74,16 @@
                                     </a>
                                 </li>
                             <?php } ?>
+                            <?php if (Auth::user()->role_id === App\Models\Roles::ROLE_DESIGNER) { ?>
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.projects.index') }}" class="nav-link">
+                                        <i class="nav-icon fas fa-th"></i>
+                                        <p>
+                                            Projects
+                                        </p>
+                                    </a>
+                                </li>
+                            <?php } ?>
                         </ul>
                     </nav>
                     <!-- /.sidebar-menu -->
@@ -108,7 +118,8 @@ $(function () {
     CKEDITOR.replace('description');
     $('.datepicker').datepicker({
 
-        format: 'dd/mm/yyyy'
+        format: 'dd/mm/yyyy',
+        startDate:'+0d',
 
     });
     oTable = $('#projects').DataTable({
@@ -123,6 +134,19 @@ $(function () {
         ]
     });
     /* END : Manage Projects  */
+
+    /* Start : Designers */
+    oTable = $('#designer').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "ajax": "{{ route('admin.projects.index') }}",
+        "columns": [
+            {data: 'title', name: 'title'},
+            {data: 'due_date', name: 'due_date'},
+            {data: 'action', name: 'action', orderable: false, searchable: false},
+        ]
+    });
+    /* END : Designers  */
 });
 function deleteRecord(obj) {
     if (confirm("Are you sure you want to delete this record?"))

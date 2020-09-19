@@ -10,16 +10,13 @@
         @endif
     </div>
     <br>
-    <h1>Post Projects</h1>
+    <h1>Projects</h1>
     <br>
-    <a href="{{route('admin.post-projects.create')}}" class='btn btn-success btn-sm'>Create</a>
-    <br><br><br>
-    <table id="projects" class="table table-hover table-condensed" style="width:100%">
+    <table id="designer" class="table table-hover table-condensed" style="width:100%">
         <thead>
             <tr>
                 <th>Title</th>
                 <th>Due Date</th>
-                <th>Assigned To</th>
                 <th>Actions</th>
             </tr>
         </thead>
