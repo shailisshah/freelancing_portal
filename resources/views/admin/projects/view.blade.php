@@ -14,28 +14,32 @@ use App\Models\Projects;
                 <div class="panel-heading"><h3>Project Details</h3></div>
 
                 <div class="panel-body">
-                    <div class="form-group">
-                        <label for="documents" class="col-md-6 control-label">Title</label>
+                    <div class="row">
                         <div class="col-md-6">
-                            {{$project->title}}
+                            <label for="documents" class="control-label">Title</label>
+                            <div class="form-group">
+                                {{$project->title}}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="documents" class="control-label">Description</label>
+                            <div class="form-group">
+                                {!! $project->description !!}
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="documents" class="col-md-6 control-label">Description</label>
+                    <div class="row">
                         <div class="col-md-6">
-                           {!! $project->description !!}
+                            <label for="documents" class="control-label">Due Date</label>
+                            <div class="form-group">
+                                {{$project->due_date}}
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="documents" class="col-md-6 control-label">Due Date</label>
                         <div class="col-md-6">
-                            {{$project->due_date}}
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="documents" class="col-md-6 control-label">Due Date</label>
-                        <div class="col-md-6">
-                            {{User::getUserName($project->assigned_to)}}
+                            <label for="documents" class="control-label">Assgned To</label>
+                            <div class="form-group">
+                                {{User::getUserName($project->assigned_to)}}
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -50,7 +54,7 @@ use App\Models\Projects;
                     <div class="form-group">
                         <label for="documents" class="col-md-6 control-label">Project Submission Status</label>
                         <div class="col-md-6">
-                            {{!empty($project->project_submission_status)?Projects::$ProjectSubmissionStatus[$project->project_submission_status]:''}}
+                            {{!empty($project->project_submission_status)?Projects::$ProjectSubmissionStatus[$project->project_submission_status]:'Not Submitted Yet'}}
                         </div>
                     </div>
 

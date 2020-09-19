@@ -37,6 +37,9 @@ Route::namespace('Admin')->group(function () {
 
     // Projects Routes For Designer...
     Route::resource('/admin/projects', 'ProjectsController', array("as" => "admin"));
+
+    // Projects Submission Routes For Designer and Client...
+    Route::resource('/admin/projects-submission', 'ProjectsSubmissionController', array("as" => "admin"));
 });
 
 

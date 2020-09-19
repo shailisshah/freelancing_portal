@@ -30,9 +30,9 @@
                     </div>
 
                     <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
-                        <label for="description" class="col-md-6 control-label">Description</label>
+                        <label for="description" class="col-md-9 control-label">Description</label>
 
-                        <div class="col-md-6">
+                        <div class="col-md-9">
                             {{ Form::textarea('description',old('description'),['class'=>'form-control', 'rows' => 10, 'cols' => 70]) }}
 
                             @if ($errors->has('description')) 

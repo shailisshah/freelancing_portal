@@ -13,6 +13,7 @@ class Projects extends Model {
     const STATUS_DELETED = 2;
     const SUBMITTED = 3;
     const SEND_BACK_TO_CLIENT = 4;
+
     public static $ProjectSubmissionStatus = [3 => 'Project Mark As Complete', 4 => 'Project Send Back For Changes'];
 
     /**
@@ -21,7 +22,7 @@ class Projects extends Model {
      * @var array
      */
     protected $fillable = [
-        'id', 'title', 'description', 'documents', 'due_date', 'assigned_to', 'status'
+        'id', 'title', 'description', 'documents', 'due_date', 'assigned_to', 'status', 'project_submission_status',
     ];
 
     /**

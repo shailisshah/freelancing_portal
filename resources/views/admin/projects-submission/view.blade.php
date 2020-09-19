@@ -57,10 +57,49 @@ use App\Models\Projects;
                             {{!empty($project->project_submission_status)?Projects::$ProjectSubmissionStatus[$project->project_submission_status]:'Not Submitted Yet'}}
                         </div>
                     </div>
+                </div>
+                <br>
+                <hr>
+                <?php if (isset($ProjectsSubmissionsHistory[0]->id)) { ?>
+                    <div class="panel-heading"><h3>Project Submission Details</h3></div>
 
+                    <div class="panel-body">
+                        <?php foreach ($ProjectsSubmissionsHistory as $k => $v) { ?>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label for="messages" class="control-label">Messages</label>
+                                    <div class="form-group">
+                                        {{$v->messages}}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="documents" class="control-label">Documents</label>
+                                    <div class="form-group">
+                                        <?php
+                                        $docs = [];
+                                        if ($v->documents)
+                                            $docs = explode(',', $v->documents);
+                                        foreach ($docs as $kd => $vd) {
+                                            ?>
+                                            <div><a target="_blank" href="{{URL('/') . '/uploads/documents/' . $v->projects_id . '/' .$vd}}">Document {{$kd+1}}</a></div>
+                                        <?php }
+                                        ?>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="messages" class="control-label">Written BY</label>
+                                    <div class="form-group">
+                                        {{User::getUserName($v->created_by)}}
+                                    </div>
+                                </div>
+                            </div>
+                        <?php } ?>
+                    </div>
+                <?php } ?>
+                <div class="panel-body">
                     <div class="form-group">
                         <div class="col-md-8 col-md-offset-4">
-                            <a type="button" class="btn btn-default" href="{{ route('admin.post-projects.index') }}">
+                            <a type="button" class="btn btn-default" href="{{ route('admin.projects-submission.index') }}">
                                 Back
                             </a>
                         </div>

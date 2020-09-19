@@ -84,6 +84,14 @@
                                     </a>
                                 </li>
                             <?php } ?>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.projects-submission.index') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-th"></i>
+                                    <p>
+                                        Projects Submission
+                                    </p>
+                                </a>
+                            </li>
                         </ul>
                     </nav>
                     <!-- /.sidebar-menu -->
@@ -119,7 +127,7 @@ $(function () {
     $('.datepicker').datepicker({
 
         format: 'dd/mm/yyyy',
-        startDate:'+0d',
+        startDate: '+0d',
 
     });
     oTable = $('#projects').DataTable({
@@ -147,6 +155,21 @@ $(function () {
         ]
     });
     /* END : Designers  */
+
+    /* Start : Manage Projects Submissions */
+    oTable = $('#projects-submission').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "ajax": "{{ route('admin.projects-submission.index') }}",
+        "columns": [
+            {data: 'title', name: 'title'},
+            {data: 'due_date', name: 'due_date'},
+            {data: 'assigned_to', name: 'assigned_to', orderable: false, searchable: false},
+            {data: 'project_submission_status', name: 'project_submission_status', orderable: false, searchable: false},
+            {data: 'action', name: 'action', orderable: false, searchable: false},
+        ]
+    });
+    /* END : Manage Projects Submissions  */
 });
 function deleteRecord(obj) {
     if (confirm("Are you sure you want to delete this record?"))

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Models\Projects;
+use App\Models\ProjectsSubmissionsHistory;
 use App\Models\User;
 use App\Models\Roles;
 use Illuminate\Support\Facades\Redirect;
@@ -39,7 +40,8 @@ class PostProjectsController extends Controller {
                                 return User::getUserName($request->assigned_to);
                             })
                             ->addColumn('action', function($row) {
-                                if ($row->project_submission_status == NULL) {
+                                $ProjectsSubmissionsHistory = ProjectsSubmissionsHistory::Where(['projects_id' => $row->id])->get();
+                                if ($row->project_submission_status == NULL && !(isset($ProjectsSubmissionsHistory[0]->id))) {
                                     $btn = '<a href="' . route('admin.post-projects.edit', $row->id) . '"  title="Edit" class="btn btn-primary btn-sm ">Edit</a>';
 
                                     $btn = $btn . ' <a onclick="deleteRecord(this)" data-href="' . route('admin.post-projects.delete', $row->id) . '"  title="Delete" class="btn btn-danger btn-sm" >Delete</a>';
