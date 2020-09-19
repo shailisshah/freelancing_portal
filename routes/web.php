@@ -31,11 +31,8 @@ Route::namespace('Admin')->group(function () {
 
     Route::get('/admin/dashboard', 'DashboardController@index')->name('admin.dashboard');
 
-    Route::resource('/admin/punches', 'PunchesController', array("as" => "admin"));
-    Route::get('/admin/punches/{punch}/delete', ['as' => 'admin.punches.delete', 'uses' => 'PunchesController@destroy']);
-
-    Route::resource('/admin/my-attendance-report', 'MyAttendanceReportController', array("as" => "admin"));
-    Route::resource('/admin/emp-attendance-report', 'EmpAttendanceReportController', array("as" => "admin"));
+    Route::resource('/admin/post-projects', 'PostProjectsController', array("as" => "admin"));
+    Route::get('/admin/post-projects/{id}/delete', ['as' => 'admin.post-projects.delete', 'uses' => 'PostProjectsController@destroy']);
 });
 
 

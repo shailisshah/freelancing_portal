@@ -17,7 +17,7 @@
         <link rel="stylesheet" href="{{ asset('css/tempusdominus-bootstrap-4.min.css') }}">
         <!-- iCheck -->
         <link rel="stylesheet" href="{{ asset('css/icheck-bootstrap.min.css') }}">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet">
 
         <!-- JQVMap -->
         <link rel="stylesheet" href="{{ asset('css/jqvmap.min.css') }}">
@@ -64,6 +64,16 @@
                                     </p>
                                 </a>
                             </li>
+                            <?php if (Auth::user()->role_id === App\Models\Roles::ROLE_CLIENT) { ?>
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.post-projects.index') }}" class="nav-link">
+                                        <i class="nav-icon fas fa-th"></i>
+                                        <p>
+                                            Posts Projects
+                                        </p>
+                                    </a>
+                                </li>
+                            <?php } ?>
                         </ul>
                     </nav>
                     <!-- /.sidebar-menu -->
@@ -86,10 +96,40 @@
         <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>  
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>  
         <!-- overlayScrollbars -->
         <script src="{{ asset('js/jquery.overlayScrollbars.min.js') }}"></script>
         <!-- AdminLTE App -->
         <script src="{{ asset('js/adminlte.js') }}"></script>
+        <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+        <script type="text/javascript">
+$(function () {
+    /* Start : Manage Projects */
+    CKEDITOR.replace('description');
+    $('.datepicker').datepicker({
+
+        format: 'dd/mm/yyyy'
+
+    });
+    oTable = $('#projects').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "ajax": "{{ route('admin.post-projects.index') }}",
+        "columns": [
+            {data: 'title', name: 'title'},
+            {data: 'due_date', name: 'due_date'},
+            {data: 'assigned_to', name: 'assigned_to', orderable: false, searchable: false},
+            {data: 'action', name: 'action', orderable: false, searchable: false},
+        ]
+    });
+    /* END : Manage Projects  */
+});
+function deleteRecord(obj) {
+    if (confirm("Are you sure you want to delete this record?"))
+    {
+        document.location = $(obj).attr('data-href');
+    }
+}
+        </script>
     </body>
 </html>
