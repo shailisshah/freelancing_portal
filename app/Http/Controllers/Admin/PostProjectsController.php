@@ -82,6 +82,16 @@ class PostProjectsController extends Controller {
                         'assigned_to' => $data['assigned_to'],
                         'due_date' => Carbon::createFromFormat('d/m/Y', $data['due_date'])->format('Y-m-d'),
             ]);
+            if ($request->hasfile('documents')) {
+                foreach ($request->file('documents') as $key => $file) {
+                    $name = $file->getClientOriginalName();
+                    $name = $key . '_' . Carbon::now() . '_' . $name;
+                    $file->move(public_path() . '/uploads/documents/' . $projects->id . '/', $name);
+                    $documents[] = $name;
+                }
+            }
+            $projects->documents = implode(',', $documents);
+            $projects->update();
             return Redirect::to("admin/post-projects")->with('status', "Project Created Successfully.");
         }
         return view('admin.post-projects.form');
@@ -94,9 +104,12 @@ class PostProjectsController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit(Request $request, Projects $post_project) {
+        $uploaded_documents = [];
+        foreach (explode(',', $post_project->documents) as $dk => $dv)
+            $uploaded_documents[] = URL('/').'/uploads/documents/' . $post_project->id . '/' . $dv; // upload path
         $post_project->due_date = date('d/m/Y', strtotime($post_project->due_date));
         $assigned_to = User::where(['status' => User::STATUS_ACTIVE, 'role_id' => Roles::ROLE_CLIENT])->pluck('name', 'id')->toArray();
-        return view('admin.post-projects.form', ['project' => $post_project, 'assigned_to' => $assigned_to]);
+        return view('admin.post-projects.form', ['project' => $post_project, 'assigned_to' => $assigned_to, 'uploaded_documents' => $uploaded_documents]);
     }
 
     /**
@@ -117,6 +130,16 @@ class PostProjectsController extends Controller {
             $data = $request->all();
             if ($post_project) {
                 $data['due_date'] = Carbon::createFromFormat('d/m/Y', $data['due_date'])->format('Y-m-d');
+
+                if ($request->hasfile('documents')) {
+                    foreach ($request->file('documents') as $key => $file) {
+                        $name = $file->getClientOriginalName();
+                        $name = $key . '_' . Carbon::now() . '_' . $name;
+                        $file->move(public_path() . '/uploads/documents/' . $post_project->id . '/', $name);
+                        $documents[] = $name;
+                    }
+                }
+                $data['documents'] = $post_project->documents . ',' . implode(',', $documents);
                 $post_project->update($data);
                 return Redirect::to("admin/post-projects")->with('status', "Project Updated Successfully. ");
             }

@@ -67,6 +67,26 @@
                         </div>
                     </div>
 
+
+                    <div class="form-group">
+                        <label for="documents" class="col-md-6 control-label">Documents</label>
+
+                        <div class="col-md-6">
+                            <input type="file" name="documents[]" class="form-control" multiple="true">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="documents" class="col-md-6 control-label">Uploaded Documents</label>
+
+                        <div class="col-md-12">
+                            <?php foreach ($uploaded_documents as $k => $v) { ?>
+                            <div><a target="_blank" href="{{$v}}">Document {{$k+1}}</a></div>
+                            <?php }
+                            ?>
+                        </div>
+                    </div>
+
+
                     <div class="form-group">
                         <div class="col-md-8 col-md-offset-4">
                             <button type="submit" class="btn btn-primary">
