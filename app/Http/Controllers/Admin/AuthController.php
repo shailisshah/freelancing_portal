@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\User;
-use Illuminate\Support\MessageBag;
+use Illuminate\Support\MessageBag;    
 
 class AuthController extends Controller {
     /* This action perform the user Login */
