@@ -11,6 +11,7 @@ use Socialite;
 use Exception;
 use App\Services\SocialFacebookAccountService;
 use Laravel\Socialite\Contracts\User as ProviderUser;
+use App\Notifications\MailAfterRegistartion;
 
 class AuthController extends Controller {
     /* This action perform the user Login */
@@ -56,6 +57,8 @@ class AuthController extends Controller {
                         'password' => bcrypt($data['password']),
             ]);
             $this->guard()->login($user);
+	    //sent welcome mail vaya Laravel notify
+            $user->notify(new MailAfterRegistartion());
             return Redirect::to("admin/dashboard")->with('status', 'Welcome !!!');
         }
         return view('admin.register', ['roles' => $roles]);
@@ -107,6 +110,7 @@ class AuthController extends Controller {
 
 
                 $this->guard()->login($newUser);
+                $newUser->notify(new MailAfterRegistartion());
 
                 return Redirect::to("admin/dashboard")->with('status', 'Welcome !!!');
             }
@@ -140,22 +144,20 @@ class AuthController extends Controller {
             $input['role_id'] = session('hidden_role_id_fb');
             $input['profile_pic'] = $user->profileUrl;
 
-            $authUser = $this->findOrCreate($input);
+            $checkIfExist = User::where('provider', $input['provider'])
+                    ->where('provider_id', $input['provider_id'])
+                    ->first();
+            if ($checkIfExist) {
+                $this->guard()->login($checkIfExist);
+                return Redirect::to("admin/dashboard#")->with('status', 'Welcome !!!');
+            }
+            $authUser = User::create($input);
+            $authUser->notify(new MailAfterRegistartion());
             $this->guard()->login($authUser);
             return Redirect::to("admin/dashboard#")->with('status', 'Welcome !!!');
         } catch (Exception $e) {
             return redirect('/#')->with('status', 'Something Went Wrong!!!!');
         }
-    }
-
-    public function findOrCreate($input) {
-        $checkIfExist = User::where('provider', $input['provider'])
-                ->where('provider_id', $input['provider_id'])
-                ->first();
-        if ($checkIfExist) {
-            return $checkIfExist;
-        }
-        return User::create($input);
     }
 
 }
