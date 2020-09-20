@@ -105,6 +105,7 @@ class AuthController extends Controller {
                             'profile_pic' => $user->avatar_original,
                 ]);
 
+
                 $this->guard()->login($newUser);
 
                 return Redirect::to("admin/dashboard")->with('status', 'Welcome !!!');

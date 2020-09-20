@@ -31,7 +31,7 @@ class Projects extends Model {
      * @var array
      */
     protected $hidden = [
-        'created_by', 'updated_by', 'created_dt', 'updated_dt',
+        'created_by', 'updated_by', 'created_at', 'updated_at',
     ];
     public $timestamps = false;
 
@@ -40,12 +40,12 @@ class Projects extends Model {
         static::creating(function($model) {
             $user = Auth::user();
             $model->created_by = (isset($user->id) && !empty($user->id)) ? $user->id : 0;
-            $model->created_dt = Carbon::now();
+            $model->created_at = Carbon::now();
         });
         static::updating(function($model) {
             $user = Auth::user();
             $model->updated_by = (isset($user->id) && !empty($user->id)) ? $user->id : 0;
-            $model->updated_dt = Carbon::now();
+            $model->updated_at = Carbon::now();
         });
     }
 

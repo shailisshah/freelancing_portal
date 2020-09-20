@@ -17,8 +17,8 @@ class CreateProjectsSubmissionsHistoryTable extends Migration {
             $table->unsignedInteger('projects_id');
             $table->mediumInteger('messages');
             $table->longText('documents')->nullable();
+            $table->dateTime('created_dt')->nullable();
             $table->integer('created_by');
-            $table->timestamps('created_dt');
         });
     }
 

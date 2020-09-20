@@ -118,7 +118,7 @@ class ProjectsSubmissionController extends Controller {
                         'messages' => $data['messages'],
                         'projects_id' => $data['project_id'],
                         'created_by' => (isset(Auth::user()->id) && !empty(Auth::user()->id)) ? Auth::user()->id : 0,
-                        'created_dt' => Carbon::now(),
+                        'created_dt' => Carbon::now()->toDateTimeString(),
             ]);
             $documents = [];
             if ($request->hasfile('documents')) {

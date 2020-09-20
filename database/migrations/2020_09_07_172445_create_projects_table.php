@@ -15,11 +15,11 @@ class CreateProjectsTable extends Migration {
         Schema::create('projects', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
-            $table->mediumInteger('messages');
+            $table->mediumText('description');
             $table->longText('documents')->nullable();
             $table->date('due_date');
             $table->unsignedInteger('assigned_to');
-            $table->tinyInteger('project_submission_status')->nullable()->comment('3->project submitted,4->send back to client	');
+            $table->tinyInteger('project_submission_status')->nullable()->comment('3->project submitted,4->send back to client');
             $table->tinyInteger('status')->default(1)->comment('1->Active,2->Inactive,3->delete');
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
