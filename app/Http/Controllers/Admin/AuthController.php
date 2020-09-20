@@ -88,19 +88,19 @@ class AuthController extends Controller {
 
             $finduser = User::where('google_id', $user->id)->first();
 
-
             if ($finduser) {
 
                 $this->guard()->login($finduser);
 
                 return Redirect::to("admin/dashboard")->with('status', 'Welcome !!!');
             } else {
+
                 $newUser = User::create([
                             'name' => $user->name,
                             'email' => $user->email,
                             'google_id' => $user->id,
 			    'role_id' => $role_id,
-                            'profile_pic' => $user->picture,
+                            'profile_pic' => $user->avatar_original,
                 ]);
 
                 $this->guard()->login($newUser);
@@ -108,8 +108,7 @@ class AuthController extends Controller {
                 return Redirect::to("admin/dashboard")->with('status', 'Welcome !!!');
             }
         } catch (Exception $e) {
-            echo "<pre>";print_r($e);exit;
-            return redirect('admin/login/google');
+            return redirect('/')->with('status', 'Something Went Wrong!!!!');
         }
     }
 
