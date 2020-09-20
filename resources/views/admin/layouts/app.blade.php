@@ -87,7 +87,7 @@
                                                jQuery(document).ready(function () {
                                                    $('#social-frm [name="social_role"]').click(function () {
                                                        $('#hidden_role_id').val(this.value);
-                                                       console.log(this.value);
+                                                       $('#hidden_role_id_fb').val(this.value);
                                                    });
                                                });
         </script>

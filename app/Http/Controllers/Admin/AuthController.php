@@ -9,6 +9,8 @@ use App\Models\User;
 use Illuminate\Support\MessageBag;
 use Socialite;
 use Exception;
+use App\Services\SocialFacebookAccountService;
+use Laravel\Socialite\Contracts\User as ProviderUser;
 
 class AuthController extends Controller {
     /* This action perform the user Login */
@@ -99,7 +101,7 @@ class AuthController extends Controller {
                             'name' => $user->name,
                             'email' => $user->email,
                             'google_id' => $user->id,
-			    'role_id' => $role_id,
+                            'role_id' => $role_id,
                             'profile_pic' => $user->avatar_original,
                 ]);
 
@@ -110,6 +112,49 @@ class AuthController extends Controller {
         } catch (Exception $e) {
             return redirect('/')->with('status', 'Something Went Wrong!!!!');
         }
+    }
+
+    /**
+     * Create a redirect method to facebook api.
+     *
+     * @return void
+     */
+    public function redirectToFacebook(Request $request) {
+        session(['hidden_role_id_fb' => $request->hidden_role_id_fb]);
+        return Socialite::driver('facebook')->redirect();
+    }
+
+    /**
+     * Return a callback method from facebook api.
+     *
+     * @return callback URL from facebook
+     */
+    public function handleFacebookCallback($provider) {
+        try {
+            $user = Socialite::driver($provider)->user();
+            $input['name'] = $user->getName();
+            $input['email'] = $user->getEmail();
+            $input['provider'] = $provider;
+            $input['provider_id'] = $user->getId();
+            $input['role_id'] = session('hidden_role_id_fb');
+            $input['profile_pic'] = $user->profileUrl;
+
+            $authUser = $this->findOrCreate($input);
+            $this->guard()->login($authUser);
+            return Redirect::to("admin/dashboard#")->with('status', 'Welcome !!!');
+        } catch (Exception $e) {
+            return redirect('/#')->with('status', 'Something Went Wrong!!!!');
+        }
+    }
+
+    public function findOrCreate($input) {
+        $checkIfExist = User::where('provider', $input['provider'])
+                ->where('provider_id', $input['provider_id'])
+                ->first();
+        if ($checkIfExist) {
+            return $checkIfExist;
+        }
+        return User::create($input);
     }
 
 }

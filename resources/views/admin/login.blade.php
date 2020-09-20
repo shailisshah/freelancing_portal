@@ -108,7 +108,7 @@
                             {{ csrf_field() }}
                         </form>
                         <form id="fb-form" action="{{ url('admin/login/facebook') }}" method="POST" style="display: none;">
-                            <input type="hidden" id="hidden_role_id" value ='1' name="hidden_role_id">
+                            <input type="hidden" id="hidden_role_id_fb" value ='1' name="hidden_role_id_fb">
                             {{ csrf_field() }}
                         </form>
                     </center>

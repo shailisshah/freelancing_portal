@@ -44,6 +44,10 @@ Route::namespace('Admin')->group(function () {
     // Login using google Routes...
     Route::any('admin/login/google', 'AuthController@redirectToGoogle')->name('admin.login.google');
     Route::any('admin/login/google/callback', 'AuthController@handleGoogleCallback')->name('admin.login.google.callback');
+
+    // Login using facebook Routes...
+    Route::any('admin/login/facebook', 'AuthController@redirectToFacebook')->name('admin.login.facebook');
+    Route::any('admin/login/facebook/{provider}/callback', 'AuthController@handleFacebookCallback')->name('admin.login.facebook.callback');
 });
 
 
