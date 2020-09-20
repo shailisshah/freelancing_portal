@@ -40,6 +40,10 @@ Route::namespace('Admin')->group(function () {
 
     // Projects Submission Routes For Designer and Client...
     Route::resource('/admin/projects-submission', 'ProjectsSubmissionController', array("as" => "admin"));
+
+    // Login using google Routes...
+    Route::any('admin/login/google', 'AuthController@redirectToGoogle')->name('admin.login.google');
+    Route::any('admin/login/google/callback', 'AuthController@handleGoogleCallback')->name('admin.login.google.callback');
 });
 
 

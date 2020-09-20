@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\User;
-use Illuminate\Support\MessageBag;    
+use Illuminate\Support\MessageBag;
+use Socialite;
+use Exception;
 
 class AuthController extends Controller {
     /* This action perform the user Login */
@@ -71,6 +73,44 @@ class AuthController extends Controller {
 
     protected function guard() {
         return Auth::guard();
+    }
+
+    public function redirectToGoogle(Request $request) {
+        session(['hidden_role_id' => $request->hidden_role_id]);
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function handleGoogleCallback() {
+        try {
+
+            $user = Socialite::driver('google')->user();
+            $role_id = session('hidden_role_id');
+
+            $finduser = User::where('google_id', $user->id)->first();
+
+
+            if ($finduser) {
+
+                $this->guard()->login($finduser);
+
+                return Redirect::to("admin/dashboard")->with('status', 'Welcome !!!');
+            } else {
+                $newUser = User::create([
+                            'name' => $user->name,
+                            'email' => $user->email,
+                            'google_id' => $user->id,
+			    'role_id' => $role_id,
+                            'profile_pic' => $user->picture,
+                ]);
+
+                $this->guard()->login($newUser);
+
+                return Redirect::to("admin/dashboard")->with('status', 'Welcome !!!');
+            }
+        } catch (Exception $e) {
+            echo "<pre>";print_r($e);exit;
+            return redirect('admin/login/google');
+        }
     }
 
 }

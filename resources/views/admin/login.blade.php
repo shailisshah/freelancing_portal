@@ -77,6 +77,36 @@
                             </div>
                         </div>
                     </form>
+                    <br><hr>
+                    <center id='social-frm'>
+                        <div class="row">
+                            <input type="radio" name="social_role" value='1' checked><b>Client</b> &nbsp;&nbsp;
+                            <input type="radio" name="social_role" value='2' ><b>Designer</b>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-2 row-block"></div>
+                            <div class="col-md-4 row-block">
+                                <a  onclick="event.preventDefault(); document.getElementById('google-form').submit();" class="btn btn-lg btn-primary btn-block">
+                                    <strong>Login With Google</strong>
+                                </a> 
+                            </div>
+                            <div class="col-md-4 row-block">
+                                <a  onclick="event.preventDefault(); document.getElementById('fb-form').submit();" class="btn btn-lg btn-primary btn-block">
+                                    <strong>Login With Facebook</strong>
+                                </a> 
+                            </div>
+                            <div class="col-md-2 row-block"></div>
+                        </div>
+                        <form id="google-form" action="{{ url('admin/login/google') }}" method="POST" style="display: none;">
+                            <input type="hidden" id="hidden_role_id" value ='1' name="hidden_role_id">
+                            {{ csrf_field() }}
+                        </form>
+                        <form id="fb-form" action="{{ url('admin/login/facebook') }}" method="POST" style="display: none;">
+                            <input type="hidden" id="hidden_role_id" value ='1' name="hidden_role_id">
+                            {{ csrf_field() }}
+                        </form>
+                    </center>
                 </div>
             </div>
         </div>
